@@ -48,4 +48,9 @@ public class ProjectDetailService {
 
         return viewResponseDtos;
     }
+
+    public List<ProjectDetailViewResponseDto> getAllDetailsByProjName(String projectName) {
+        Project found = projectRepository.findProjectByProjectName(projectName);
+        return getAllDetails(found.getId());
+    }
 }

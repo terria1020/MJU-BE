@@ -6,6 +6,9 @@ import com.project.db.mju.webserver.web.v1.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service(value = "v2ProjectService")
 public class ProjectService {
     @Autowired
@@ -15,5 +18,12 @@ public class ProjectService {
         final Project project = projectRepository.findProjectByProjectName(name);
 
         return new ProjectDto(project);
+    }
+
+    public List<ProjectDto> getAllProjects() {
+        return projectRepository.findAll()
+                .stream()
+                .map(ProjectDto::new)
+                .collect(Collectors.toList());
     }
 }
