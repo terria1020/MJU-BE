@@ -16,7 +16,7 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(SwaggerInfo()).select()
-                .apis(RequestHandlerSelectors.basePackage("com.project.db.mju.webserver.web.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.project.db.mju.webserver.web.v2.controller"))
                 .paths(PathSelectors.any())
                 .build()
                 .useDefaultResponseMessages(false);
