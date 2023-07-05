@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v2")
-@RestController(value = "v2ProjectPMEvaluationController")
-public class ProjectPMEvaluationController {
+@RestController(value = "v2EvaluationController")
+public class EvaluationController {
     @Autowired
     PMEvaluationService pmEvaluationService;
 
