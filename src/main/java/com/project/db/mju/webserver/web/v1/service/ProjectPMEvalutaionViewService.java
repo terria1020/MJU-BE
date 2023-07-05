@@ -21,7 +21,7 @@ public class ProjectPMEvalutaionViewService {
     @Autowired
     EmployeeService employeeService;
 
-    public List<ProjectPMEvaluationViewDto> getAllEvals(ProjectPMEvaluationViewRequestDto requestDto) {
+    public List<ProjectPMEvaluationViewDto> getAllEvaluation(ProjectPMEvaluationViewRequestDto requestDto) {
         Employee evaluator = employeeService.getByName(requestDto.getEvaluatorName());
 
         Collection<ProjectPMEvaluation> eval = pmEvaluationRepository.getAllPmEvaluations(requestDto.getProjectId(), evaluator.getId());

@@ -19,7 +19,7 @@ public class ProjectPMEvalutaionViewController {
     @PostMapping("v1/view/evalutaion")
     public List<ProjectPMEvaluationViewDto> viewEvaluation(@RequestBody ProjectPMEvaluationViewRequestDto requestDto) {
 
-        List<ProjectPMEvaluationViewDto> allEvals = service.getAllEvals(requestDto);
+        List<ProjectPMEvaluationViewDto> allEvals = service.getAllEvaluation(requestDto);
 
         return allEvals;
     }
