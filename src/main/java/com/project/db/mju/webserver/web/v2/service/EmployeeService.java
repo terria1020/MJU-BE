@@ -12,8 +12,12 @@ import java.util.stream.Collectors;
 @Service(value = "v2EmployeeService")
 public class EmployeeService {
 
+    private final EmployeeRepository employeeRepository;
+
     @Autowired
-    private EmployeeRepository employeeRepository;
+    public EmployeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
     public Employee getByName(String name) {
         return employeeRepository.findEmployeeByName(name);

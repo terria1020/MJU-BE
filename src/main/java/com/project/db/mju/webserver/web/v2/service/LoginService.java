@@ -10,8 +10,12 @@ import org.springframework.stereotype.Service;
 @Service(value = "v2LoginService")
 public class LoginService {
 
+    private final EmployeeRepository employeeRepository;
+
     @Autowired
-    private EmployeeRepository employeeRepository;
+    public LoginService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
     public LoginResponseDto loginAuth(LoginRequestDto requestDto) {
 

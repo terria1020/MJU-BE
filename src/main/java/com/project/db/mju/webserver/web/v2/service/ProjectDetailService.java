@@ -18,17 +18,19 @@ import java.util.Optional;
 @Service(value = "v2ProjectDetailService")
 public class ProjectDetailService {
 
-    @Autowired
-    ProjectDetailRepository detailRepository;
+    private final ProjectDetailRepository detailRepository;
+    private final ProjectRepository projectRepository;
+    private final EmployeeRepository employeeRepository;
+    private final JobRepository jobRepository;
 
     @Autowired
-    ProjectRepository projectRepository;
-
-    @Autowired
-    EmployeeRepository employeeRepository;
-
-    @Autowired
-    JobRepository jobRepository;
+    public ProjectDetailService(ProjectDetailRepository detailRepository, ProjectRepository projectRepository, EmployeeRepository employeeRepository, JobRepository jobRepository) {
+        this.detailRepository = detailRepository;
+        this.projectRepository = projectRepository;
+        this.employeeRepository = employeeRepository;
+        this.jobRepository = jobRepository;
+    }
+    
     public List<ProjectDetailViewResponseDto> getAllDetails(Long projectId) {
         List<ProjectDetail> details = detailRepository.findAllProjectDetailRepositoryByProjectId(projectId);
 

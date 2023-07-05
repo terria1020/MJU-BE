@@ -16,11 +16,16 @@ import java.util.List;
 @RequestMapping("/api/v2")
 @RestController(value = "v2EvaluationController")
 public class EvaluationController {
-    @Autowired
-    PMEvaluationService pmEvaluationService;
+
+    private final PMEvaluationService pmEvaluationService;
+    private  final ProjectPMEvalutaionViewService evalutaionViewService;
 
     @Autowired
-    ProjectPMEvalutaionViewService evalutaionViewService;
+    public EvaluationController(PMEvaluationService pmEvaluationService, ProjectPMEvalutaionViewService evalutaionViewService) {
+        this.pmEvaluationService = pmEvaluationService;
+        this.evalutaionViewService = evalutaionViewService;
+    }
+
 
     @GetMapping("/evaluations")
     @ApiOperation("프로젝트 id와 평가자에 맞는 모든 평가를 가져온다")

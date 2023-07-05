@@ -15,11 +15,14 @@ import java.util.List;
 @Service(value = "v2ProjectPMEvaluationService")
 public class ProjectPMEvalutaionViewService {
 
-    @Autowired
-    ProjectPMEvaluationRepository pmEvaluationRepository;
+    private final ProjectPMEvaluationRepository pmEvaluationRepository;
+    private final EmployeeService employeeService;
 
     @Autowired
-    EmployeeService employeeService;
+    public ProjectPMEvalutaionViewService(ProjectPMEvaluationRepository pmEvaluationRepository, EmployeeService employeeService) {
+        this.pmEvaluationRepository = pmEvaluationRepository;
+        this.employeeService = employeeService;
+    }
 
     public List<ProjectPMEvaluationViewDto> getAllEvals(ProjectPMEvaluationViewRequestDto requestDto) {
         Employee evaluator = employeeService.getByName(requestDto.getEvaluatorName());

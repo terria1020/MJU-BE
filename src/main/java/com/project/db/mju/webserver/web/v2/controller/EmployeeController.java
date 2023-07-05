@@ -1,9 +1,7 @@
 package com.project.db.mju.webserver.web.v2.controller;
 
-import com.project.db.mju.webserver.web.v1.domain.Employee;
 import com.project.db.mju.webserver.web.v2.dto.EmployeeDto;
 import com.project.db.mju.webserver.web.v2.service.EmployeeService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +15,12 @@ import java.util.List;
 @RequestMapping("/api/v2")
 public class EmployeeController {
 
+    private final EmployeeService employeeService;
+
     @Autowired
-    EmployeeService employeeService;
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
     @GetMapping("/employees")
     @ApiOperation(value = "모든 사원들을 가져온다")

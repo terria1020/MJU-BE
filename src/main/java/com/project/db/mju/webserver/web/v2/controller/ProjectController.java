@@ -4,25 +4,26 @@ import com.project.db.mju.webserver.web.v1.dto.ProjectDetailViewResponseDto;
 import com.project.db.mju.webserver.web.v1.dto.ProjectDto;
 import com.project.db.mju.webserver.web.v2.service.ProjectDetailService;
 import com.project.db.mju.webserver.web.v2.service.ProjectService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController(value = "v2ProjectController")
 @RequestMapping("/api/v2")
 public class ProjectController {
-    @Autowired
-    private ProjectService projectService;
+
+    private final ProjectService projectService;
+    private final ProjectDetailService projectDetailService;
 
     @Autowired
-    private ProjectDetailService projectDetailService;
+    public ProjectController(ProjectService projectService, ProjectDetailService projectDetailService) {
+        this.projectService = projectService;
+        this.projectDetailService = projectDetailService;
+    }
 
     @GetMapping("/projects")
     @ApiOperation("모든 프로젝트를 돌려준다")

@@ -13,8 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController(value = "v2LoginController")
 public class LoginController {
 
+    private final LoginService loginService;
+
     @Autowired
-    LoginService loginService;
+    public LoginController(LoginService loginService) {
+        this.loginService = loginService;
+    }
 
     @PostMapping("/login")
     public LoginResponseDto login(@RequestBody LoginRequestDto requestDto) {

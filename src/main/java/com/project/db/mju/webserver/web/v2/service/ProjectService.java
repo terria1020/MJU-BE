@@ -11,8 +11,12 @@ import java.util.stream.Collectors;
 
 @Service(value = "v2ProjectService")
 public class ProjectService {
+    private final ProjectRepository projectRepository;
+
     @Autowired
-    private ProjectRepository projectRepository;
+    public ProjectService(ProjectRepository projectRepository) {
+        this.projectRepository = projectRepository;
+    }
 
     public ProjectDto findProjectByProjectName(String name) {
         final Project project = projectRepository.findProjectByProjectName(name);

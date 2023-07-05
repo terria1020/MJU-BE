@@ -9,8 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service(value = "v2PMEvaluationService")
 public class PMEvaluationService {
+    private final ProjectPMEvaluationRepository projectPMEvaluationRepository;
+
     @Autowired
-    private ProjectPMEvaluationRepository projectPMEvaluationRepository;
+    public PMEvaluationService(ProjectPMEvaluationRepository projectPMEvaluationRepository) {
+        this.projectPMEvaluationRepository = projectPMEvaluationRepository;
+    }
 
     @Transactional
     public int putProjectPMEvaluation(ProjectPMEvaluationDto projectPMEvaluationDto) {
