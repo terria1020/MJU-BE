@@ -12,4 +12,8 @@ import lombok.Setter;
 public class ProjectPMEvaluationViewRequestDto {
     private Long projectId;
     private String evaluatorName;
+
+    public static ProjectPMEvaluationViewRequestDto of(Long projectId, String evaluatorName) {
+        return new ProjectPMEvaluationViewRequestDto(projectId, evaluatorName);
+    }
 }

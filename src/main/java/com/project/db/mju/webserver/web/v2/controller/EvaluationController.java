@@ -1,12 +1,17 @@
 package com.project.db.mju.webserver.web.v2.controller;
 
 import com.project.db.mju.webserver.web.v1.dto.ProjectPMEvaluationDto;
+import com.project.db.mju.webserver.web.v1.dto.ProjectPMEvaluationViewDto;
+import com.project.db.mju.webserver.web.v1.dto.ProjectPMEvaluationViewRequestDto;
 import com.project.db.mju.webserver.web.v2.service.PMEvaluationService;
+import com.project.db.mju.webserver.web.v2.service.ProjectPMEvalutaionViewService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/api/v2")
 @RestController(value = "v2EvaluationController")
@@ -14,6 +19,18 @@ public class EvaluationController {
     @Autowired
     PMEvaluationService pmEvaluationService;
 
+    @Autowired
+    ProjectPMEvalutaionViewService evalutaionViewService;
+
+    @GetMapping("/evaluations")
+    @ApiOperation("프로젝트 id와 평가자에 맞는 모든 평가를 가져온다")
+    public List<ProjectPMEvaluationViewDto> viewEvaluation(
+            @RequestParam(value = "project_id") Long projectId,
+            @RequestParam(value = "evaluator_name") String evaluatorName
+    ) {
+        List<ProjectPMEvaluationViewDto> allEvals = evalutaionViewService.getAllEvals(ProjectPMEvaluationViewRequestDto.of(projectId, evaluatorName));
+        return allEvals;
+    }
     @PostMapping("/evaluations/pm")
     @ApiOperation(value = "pm 평가를 등록한다.")
     @ApiResponses({
