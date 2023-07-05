@@ -4,9 +4,11 @@ import com.project.db.mju.webserver.web.v1.domain.Employee;
 import com.project.db.mju.webserver.web.v1.domain.ProjectPMEvaluation;
 import com.project.db.mju.webserver.web.v1.dto.ProjectPMEvaluationViewDto;
 import com.project.db.mju.webserver.web.v1.dto.ProjectPMEvaluationViewRequestDto;
+import com.project.db.mju.webserver.web.v1.repository.EmployeeRepository;
 import com.project.db.mju.webserver.web.v1.repository.ProjectPMEvaluationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,32 +18,32 @@ import java.util.List;
 public class ProjectPMEvalutaionViewService {
 
     private final ProjectPMEvaluationRepository pmEvaluationRepository;
-    private final EmployeeService employeeService;
+    private final EmployeeRepository employeeRepository;
 
     @Autowired
-    public ProjectPMEvalutaionViewService(ProjectPMEvaluationRepository pmEvaluationRepository, EmployeeService employeeService) {
+    public ProjectPMEvalutaionViewService(ProjectPMEvaluationRepository pmEvaluationRepository, EmployeeRepository employeeRepository) {
         this.pmEvaluationRepository = pmEvaluationRepository;
-        this.employeeService = employeeService;
+        this.employeeRepository = employeeRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<ProjectPMEvaluationViewDto> getAllEvals(ProjectPMEvaluationViewRequestDto requestDto) {
-        Employee evaluator = employeeService.getByName(requestDto.getEvaluatorName());
+        Employee evaluator = employeeRepository.findByName(requestDto.getEvaluatorName())
+                .orElseThrow(() -> new RuntimeException()); // TODO: 예외 구현 시 orElseThrow 처리
 
-        Collection<ProjectPMEvaluation> eval = pmEvaluationRepository.getAllPmEvaluations(requestDto.getProjectId(), evaluator.getId());
+        List<ProjectPMEvaluation> allEval = pmEvaluationRepository.getAllByProjectIdAndEvaluator(
+                requestDto.getProjectId(),
+                evaluator.getId()
+        );
+
         List<ProjectPMEvaluationViewDto> dtos = new ArrayList<>();
 
-        for (ProjectPMEvaluation c: eval) {
-            dtos.add(new ProjectPMEvaluationViewDto(
-                    c.getProjectId(),
-                    employeeService.getById(c.getEvaluator()).getName(),
-                    employeeService.getById(c.getEvaluated()).getName(),
-                    c.getCommunicationComment(),
-                    c.getBusinessComment(),
-                    c.getCommunicationRate(),
-                    c.getBusinessRate()
-            ));
-        }
+        allEval.forEach(evaluation -> {
+            Employee evaluated = employeeRepository.findById(evaluation.getEvaluated())
+                    .get();
+            dtos.add(ProjectPMEvaluationViewDto.of(evaluation, evaluator, evaluated));
 
+        });
         return dtos;
 
     }

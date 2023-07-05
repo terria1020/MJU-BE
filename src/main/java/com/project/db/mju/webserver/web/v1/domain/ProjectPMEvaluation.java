@@ -1,9 +1,7 @@
 package com.project.db.mju.webserver.web.v1.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.project.db.mju.webserver.web.v1.dto.ProjectPMEvaluationDto;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,6 +9,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 @Entity(name = "project_pm_evaluation")
 public class ProjectPMEvaluation {
     @Id
@@ -35,4 +34,14 @@ public class ProjectPMEvaluation {
     @Column(name = "business_comment")
     private String businessComment;
 
+    public boolean updateAndGetResult(ProjectPMEvaluationDto dto) {
+        if (this.evaluator.equals(dto.getEvaluator()) && evaluated.equals(dto.getEvaluated())) {
+            this.businessComment = dto.getBusinessComment();
+            this.businessRate = dto.getBusinessRate();
+            this.communicationComment = dto.getCommunicationComment();
+            this.communicationRate = dto.getCommunicationRate();
+            return true;
+        }
+        return false;
+    }
 }

@@ -5,6 +5,7 @@ import com.project.db.mju.webserver.web.v1.dto.ProjectDto;
 import com.project.db.mju.webserver.web.v1.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,12 +19,14 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
+    @Transactional(readOnly = true)
     public ProjectDto findProjectByProjectName(String name) {
-        final Project project = projectRepository.findProjectByProjectName(name);
-
-        return new ProjectDto(project);
+        Project found = projectRepository.findByProjectName(name)
+                .orElseThrow(() -> new RuntimeException()); // TODO: 예외 구현 시 orElseThrow 처리
+        return new ProjectDto(found);
     }
 
+    @Transactional(readOnly = true)
     public List<ProjectDto> getAllProjects() {
         return projectRepository.findAll()
                 .stream()

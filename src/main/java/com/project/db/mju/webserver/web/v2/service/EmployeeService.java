@@ -19,14 +19,6 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    public Employee getByName(String name) {
-        return employeeRepository.findEmployeeByName(name);
-    }
-
-    public Employee getById(Long id) {
-        return employeeRepository.findById(id).get();
-    }
-
     public List<EmployeeDto> getAllEmployees() {
         return employeeRepository.findAll()
                 .stream()

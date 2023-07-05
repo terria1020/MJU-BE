@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProjectPMEvaluationRepository extends JpaRepository<ProjectPMEvaluation, Long> {
@@ -18,7 +20,9 @@ public interface ProjectPMEvaluationRepository extends JpaRepository<ProjectPMEv
     @Query(value = "SELECT * FROM project_pm_evaluation WHERE project_pm_evaluation.project_id=:projectId and project_pm_evaluation.evaluator=:evaluator", nativeQuery = true)
     public Collection<ProjectPMEvaluation> getAllPmEvaluations(Long projectId, Long evaluator);
 
+    public List<ProjectPMEvaluation> getAllByProjectIdAndEvaluator(Long projectId, Long evaluator);
+
     public ProjectPMEvaluation findProjectPMEvaluationByProjectIdAndEvaluated(Long projectId, Long evaluated);
 
-
+    public Optional<ProjectPMEvaluation> findByProjectIdAndEvaluated(Long projectId, Long evaluated);
 }

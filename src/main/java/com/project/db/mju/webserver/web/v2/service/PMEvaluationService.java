@@ -18,25 +18,24 @@ public class PMEvaluationService {
 
     @Transactional
     public int putProjectPMEvaluation(ProjectPMEvaluationDto projectPMEvaluationDto) {
-        return projectPMEvaluationRepository.putProjectPMEvaluation(null, projectPMEvaluationDto.getProjectId(), projectPMEvaluationDto.getCommunicationRate(),
-                projectPMEvaluationDto.getCommunicationComment(), projectPMEvaluationDto.getBusinessRate(), projectPMEvaluationDto.getBusinessComment(),
-                projectPMEvaluationDto.getEvaluator(), projectPMEvaluationDto.getEvaluated());
+        ProjectPMEvaluation pmEvaluation = ProjectPMEvaluation.builder()
+                .projectId((projectPMEvaluationDto.getProjectId()))
+                .communicationRate(projectPMEvaluationDto.getCommunicationRate())
+                .communicationComment(projectPMEvaluationDto.getCommunicationComment())
+                .businessRate(projectPMEvaluationDto.getBusinessRate())
+                .businessComment(projectPMEvaluationDto.getBusinessComment())
+                .evaluator(projectPMEvaluationDto.getEvaluator())
+                .evaluated(projectPMEvaluationDto.getEvaluated())
+                .build();
+
+        return projectPMEvaluationRepository.save(pmEvaluation).getProjectId().intValue();
     }
 
     @Transactional
     public int updateProjectPMEvalutaion(ProjectPMEvaluationDto projectPMEvaluationDto) {
-        ProjectPMEvaluation result = projectPMEvaluationRepository.findProjectPMEvaluationByProjectIdAndEvaluated(projectPMEvaluationDto.getProjectId(), projectPMEvaluationDto.getEvaluated());
-
-        if (result != null) {
-            if (result.getEvaluator().equals(projectPMEvaluationDto.getEvaluator()) && result.getEvaluated().equals(projectPMEvaluationDto.getEvaluated())) {
-                result.setBusinessComment(projectPMEvaluationDto.getBusinessComment());
-                result.setBusinessRate(projectPMEvaluationDto.getBusinessRate());
-                result.setCommunicationComment(projectPMEvaluationDto.getCommunicationComment());
-                result.setCommunicationRate(projectPMEvaluationDto.getCommunicationRate());
-                return 1;
-            }
-            else return 0;
-        }
-        return 0;
+        ProjectPMEvaluation found = projectPMEvaluationRepository.findByProjectIdAndEvaluated(projectPMEvaluationDto.getProjectId(), projectPMEvaluationDto.getEvaluated())
+                .orElseThrow(() -> new RuntimeException());
+        if (found.updateAndGetResult(projectPMEvaluationDto)) return 1;
+        else return 0;
     }
 }

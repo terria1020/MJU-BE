@@ -19,13 +19,9 @@ public class LoginService {
 
     public LoginResponseDto loginAuth(LoginRequestDto requestDto) {
 
-        Employee result = employeeRepository.findEmployeeByUserId(requestDto.getUserId());
-
-        if (result.getUserPw().equals(requestDto.getUserPw())) {
-            return new LoginResponseDto(result.getName());
-        }
-        else {
-            return null;
-        }
+        Employee result = employeeRepository.findByUserId(requestDto.getUserId())
+                .orElseThrow(() -> new RuntimeException());
+        if (result.getUserPw().equals(requestDto.getUserPw())) return new LoginResponseDto(result.getName());
+        else throw new RuntimeException();
     }
 }
