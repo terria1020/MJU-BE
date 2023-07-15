@@ -1,27 +1,8 @@
 package com.project.db.mju.webserver.web.v2.service;
 
-import com.project.db.mju.webserver.web.v1.domain.Employee;
 import com.project.db.mju.webserver.web.v1.dto.LoginRequestDto;
 import com.project.db.mju.webserver.web.v1.dto.LoginResponseDto;
-import com.project.db.mju.webserver.web.v1.repository.EmployeeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-@Service(value = "v2LoginService")
-public class LoginService {
-
-    private final EmployeeRepository employeeRepository;
-
-    @Autowired
-    public LoginService(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
-    }
-
-    public LoginResponseDto loginAuth(LoginRequestDto requestDto) {
-
-        Employee result = employeeRepository.findByUserId(requestDto.getUserId())
-                .orElseThrow(() -> new RuntimeException());
-        if (result.getUserPw().equals(requestDto.getUserPw())) return new LoginResponseDto(result.getName());
-        else throw new RuntimeException();
-    }
+public interface LoginService {
+    public LoginResponseDto loginAuth(LoginRequestDto requestDto);
 }
